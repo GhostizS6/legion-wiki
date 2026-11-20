@@ -64,6 +64,13 @@ git push
 3. Поднять `version` в `package.json` и пересобрать — только если менялся код
    (это триггер автообновления у пользователей). Новые предметы версию не требуют.
 
+4. Сбросить кеш jsDelivr, чтобы обновление дошло сразу, а не через 12 часов:
+
+```powershell
+Invoke-WebRequest -UseBasicParsing https://purge.jsdelivr.net/gh/GhostizS6/legion-wiki@main/legion-wiki.user.js
+Invoke-WebRequest -UseBasicParsing https://purge.jsdelivr.net/gh/GhostizS6/legion-wiki@main/data/items.json
+```
+
 ## Как собираются данные
 
 1. `collector.js` оборачивает `LGInventory.art` — сайт сам вызывает его для
