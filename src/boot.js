@@ -10,11 +10,13 @@
   const TEMPLATE = `
 <header class="top">
   <div class="brand">
-    <span class="brandmark" aria-hidden="true">✦</span>
-    <div class="brand-copy"><div class="eyebrow">НЕЗАВИСИМАЯ ЭНЦИКЛОПЕДИЯ</div><h1>LEGION <span>WIKI</span></h1>
-    <p class="guild-signature">Данные собираются из игры автоматически</p></div>
+    <span class="brandmark" aria-hidden="true">◆</span>
+    <div class="brand-copy">
+      <h1>Вики <span>Легиона</span></h1>
+      <p class="guild-signature">Каталог предметов и автосбор из игры</p>
+    </div>
   </div>
-  <div class="topinfo"><span class="tiny-paw" aria-hidden="true"></span><span id="totals">Энциклопедия предметов</span></div>
+  <div class="topinfo"><span id="totals">Энциклопедия предметов</span></div>
 </header>
 <div class="frame">
   <div class="lgw-admin">
@@ -25,7 +27,6 @@
     </div>
   </div>
   <nav class="tabs" id="tabs" aria-label="Классы предметов"></nav>
-  <div class="ornament" aria-hidden="true"><span class="tiny-paw"></span></div>
   <section class="toolbar" aria-label="Поиск и фильтры">
     <label class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" aria-label="Поиск предметов" placeholder="Поиск предметов по названию, описанию, эффектам…"></label>
     <select id="quality" aria-label="Качество"><option value="">Любое качество</option></select>
@@ -39,8 +40,7 @@
 <div class="compare-bar hidden" id="compareBar"><div id="compareNames"></div><div><button id="compareOpen" class="primary">Сравнить</button><button id="compareClear" class="subtle">Очистить</button></div></div>
 <dialog id="dialog" class="compare-dialog" aria-labelledby="dialogTitle">
   <header class="compare-header">
-    <div class="compare-brand" aria-hidden="true"><span class="compare-brand-text">✦ LEGION <b>WIKI</b></span></div>
-    <div class="compare-heading"><h2 id="dialogTitle">Сравнение предметов</h2><div class="ornament" aria-hidden="true"><span class="tiny-paw"></span></div></div>
+    <div class="compare-heading"><h2 id="dialogTitle">Сравнение предметов</h2></div>
     <button id="closeDialog" class="subtle" aria-label="Закрыть сравнение" autofocus><svg class="close-icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="close-label">Закрыть</span></button>
   </header>
   <div id="dialogBody" class="compare-scroll" tabindex="0" aria-label="Характеристики сравниваемых предметов"></div>

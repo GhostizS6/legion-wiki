@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-// Одноразовый импорт старого снепшота вики 3.13.0 в формат data/items.json.
-// Использование: node tools/seed.js --wiki "C:\...\legion-wiki-edge-3.13.0\wiki-data.json"
+// Одноразовый импорт ранее собранного снепшота предметов в data/items.json.
+// Использование: node tools/seed.js --wiki "путь\wiki-data.json"
 const fs = require('fs');
 const path = require('path');
 

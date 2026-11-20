@@ -1,5 +1,5 @@
 'use strict';
-// UI вики: та же логика, что в 3.13.0, но смонтирована в произвольный root (shadow DOM в игре).
+// UI вики: поиск, фильтры, рейтинг, заточка и сравнение в общем каталоге.
 globalThis.LegionWikiUI = (function () {
   const { ENCHANT_BONUS, num, enchantStats, formatStat, fitsClass, classLabel, missing } = ItemModel;
 
@@ -181,6 +181,7 @@ globalThis.LegionWikiUI = (function () {
 
     function tile(item) {
       const card = mk('article', 'item' + (selected === item.id ? ' selected' : ''));
+      card.dataset.rarity = item.rarity || '';
       card.tabIndex = 0; card.setAttribute('aria-label', item.name);
       card.onclick = () => {
         selected = item.id;
@@ -253,6 +254,7 @@ globalThis.LegionWikiUI = (function () {
     function detail(item) {
       hideRatingTooltip();
       $details.replaceChildren();
+      $details.dataset.rarity = item ? item.rarity || '' : '';
       if (!item) {
         $details.append(mk('p', 'muted', 'Выберите предмет, чтобы увидеть описание и характеристики.'));
         return;
