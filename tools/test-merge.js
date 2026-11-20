@@ -2,7 +2,7 @@
 'use strict';
 // Минимальный тест слияния каталога с наблюдениями.
 const assert = require('assert');
-const { keyOf, mergeCatalog } = require('../extension/shared/merge.js');
+const { keyOf, mergeCatalog } = require('../src/merge.js');
 
 const base = {
   schemaVersion: 2,

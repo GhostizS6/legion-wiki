@@ -1,0 +1,12 @@
+{
+  "name": "legion-wiki",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Энциклопедия предметов Legion: юзерскрипт для Tampermonkey",
+  "scripts": {
+    "build": "node tools/build.js",
+    "merge": "node tools/merge.js",
+    "validate": "node tools/validate.js",
+    "test": "node tools/test-merge.js"
+  }
+}

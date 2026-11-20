@@ -19,6 +19,8 @@
     if (!queue.size) return;
     const items = [...queue.values()];
     queue = new Map();
+    // В юзерскрипте emit задан напрямую, в расширении — через postMessage.
+    if (typeof globalThis.LegionWikiEmit === 'function') { globalThis.LegionWikiEmit(items); return; }
     window.postMessage({ source: 'legion-wiki', type: 'capture', items }, '*');
   }
 

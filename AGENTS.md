@@ -1,7 +1,6 @@
-# legion-wiki — расширение и данные
+# legion-wiki — юзерскрипт для Tampermonkey
 
-Энциклопедия предметов игры «Легион»: вкладка «Вики» в шапке игры плюс каталог данных
-в этом репозитории.
+Энциклопедия предметов игры «Легион» с вкладкой «Вики» в шапке игры и автосбором данных.
 
 ## Язык проекта
 
@@ -14,28 +13,30 @@
 | Папка | Что там |
 |---|---|
 | `data/` | `items.json` — единственный источник правды |
-| `extension/` | MV3-расширение: `manifest.json`, `background.js`, `content/`, `shared/`, `data/items.json` |
-| `tools/` | `seed.js`, `merge.js`, `validate.js`, `test-merge.js` |
+| `src/` | исходники юзерскрипта: `platform.js`, `collector.js`, `boot.js`, `app.js`, `model.js`, `rating.js`, `item-model.js`, `merge.js`, `style.css`, `comparison.css` |
+| `tools/` | `build.js`, `merge.js`, `validate.js`, `test-merge.js`, `seed.js` |
+| `legion-wiki.user.js` | собранный артефакт, править руками нельзя |
 
 ## Команды
 
 ```powershell
-node tools/merge.js legion-wiki-captures.json   # слить экспорт из игры
-node tools/validate.js                          # проверить данные
-node tools/test-merge.js                        # тест слияния
-node --check extension/background.js
-node --check extension/content/*.js
+node tools/build.js        # пересобрать legion-wiki.user.js
+node tools/merge.js file.json
+node tools/validate.js
+node tools/test-merge.js
+node --check legion-wiki.user.js
 ```
 
 ## Правила изменений
 
-- Каталог правится только через `tools/merge.js` или вручную в `data/items.json`;
-  `extension/data/items.json` — копия, её обновляет `tools/merge.js`.
-- Схема данных: `schemaVersion: 2`, ключ предмета `gameId + '|' + name`,
-  статы вида `{ "Царапки": { "value": 12, "percent": false } }`.
-- После правки данных — обязательно `node tools/validate.js`.
-- Источник данных в расширении:
-  `https://raw.githubusercontent.com/GhostizS6/legion-wiki/main/data/items.json`.
+- Правки только в `src/`, `data/` и `tools/`; `legion-wiki.user.js` пересобирается.
+- Версия для автообновления — только `package.json` → `version` (попадает в `@version`).
+- Источник данных: `https://cdn.jsdelivr.net/gh/GhostizS6/legion-wiki@main/data/items.json`
+  (запасной — raw.githubusercontent.com).
+- Схема данных: `schemaVersion: 2`, ключ `gameId + '|' + name`,
+  статы `{ "Царапки": { "value": 12, "percent": false } }`.
+- После любой правки данных — `node tools/merge.js` или `node tools/build.js`,
+  затем `node tools/validate.js`.
 - Сбор данных — только чтение того, что игрок видит в игре; авторизацию,
   лимиты и антибот не обходим.
 

@@ -1,6 +1,6 @@
 'use strict';
 // UI вики: та же логика, что в 3.13.0, но смонтирована в произвольный root (shadow DOM в игре).
-window.LegionWikiUI = (function () {
+globalThis.LegionWikiUI = (function () {
   const { ENCHANT_BONUS, num, enchantStats, formatStat, fitsClass, classLabel, missing } = ItemModel;
 
   function mount(root, options) {

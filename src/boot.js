@@ -1,12 +1,11 @@
 'use strict';
 // Вкладка «Вики» в шапке игры + панель в shadow DOM.
 (function () {
-  if (window.__legionWikiBoot) return;
-  window.__legionWikiBoot = true;
+  if (globalThis.__legionWikiBoot) return;
+  globalThis.__legionWikiBoot = true;
 
+  const platform = globalThis.LegionWikiPlatform;
   let ui = null, shadow = null, infoNode = null, loaded = false, loading = false, meta = null;
-
-  const send = (type, extra) => chrome.runtime.sendMessage({ type, ...extra }).catch(() => null);
 
   const TEMPLATE = `
 <header class="top">
@@ -48,12 +47,8 @@
   <footer class="compare-footer" aria-label="Информация о заточке"><p class="compare-footer-text">Заточка меняется отдельно для каждого предмета. Золотом отмечено наибольшее значение характеристики.</p></footer>
 </dialog>`;
 
-  async function paint(style) {
-    const [main, comparison] = await Promise.all([
-      fetch(chrome.runtime.getURL('content/style.css')).then(response => response.text()),
-      fetch(chrome.runtime.getURL('content/comparison.css')).then(response => response.text()),
-    ]);
-    style.textContent = main + '\n' + comparison;
+  function paint(style) {
+    style.textContent = platform.styles();
   }
 
   function build() {
@@ -72,7 +67,7 @@
     wrap.className = 'lgw';
     wrap.innerHTML = TEMPLATE;
     shadow.append(style, wrap);
-    paint(style).catch(() => { style.textContent = ':host{display:block;color:#eee;font:14px sans-serif}'; });
+    paint(style);
     ui = LegionWikiUI.mount(shadow, {});
     infoNode = shadow.querySelector('#lgw-info');
     shadow.querySelector('#lgw-refresh').addEventListener('click', () => load(true));
@@ -84,7 +79,7 @@
     if (!infoNode) return;
     if (extra) meta = extra;
     if (!meta || !meta.data) { infoNode.textContent = 'Загрузка данных…'; return; }
-    const source = meta.source === 'remote' ? 'GitHub' : 'локальный снепшот';
+    const source = meta.source === 'remote' ? 'GitHub' : 'встроенный снепшот';
     const when = meta.fetchedAt ? new Date(meta.fetchedAt).toLocaleString('ru-RU') : '—';
     infoNode.textContent = `Предметов: ${meta.data.items.length} · источник: ${source} (${when}) · собрано в игре: ${meta.captured ?? '…'}`;
   }
@@ -93,7 +88,8 @@
     if (loading) return;
     loading = true;
     if (infoNode) infoNode.textContent = force ? 'Обновляю данные с GitHub…' : 'Загрузка данных…';
-    const result = await send('catalog', { force: !!force });
+    let result = null;
+    try { result = await platform.catalog(!!force); } catch (error) { result = null; }
     loading = false;
     if (!result || !result.data) {
       if (infoNode) { infoNode.textContent = 'Не удалось загрузить данные. Проверь сеть или повтори позже.'; infoNode.classList.add('lgw-error'); }
@@ -102,12 +98,12 @@
     if (infoNode) infoNode.classList.remove('lgw-error');
     loaded = true;
     ui.setData(result.data);
-    const count = await send('captureCount');
+    const count = await platform.captureCount();
     showMeta({ ...result, captured: count ? count.count : result.captured });
   }
 
   async function exportCaptures() {
-    const result = await send('export');
+    const result = await platform.export();
     if (!infoNode) return;
     infoNode.textContent = result && result.ok
       ? `Экспортировано ${result.count} наблюдений. Файл сохранён в загрузки.`
@@ -124,6 +120,7 @@
       else button.removeAttribute('aria-current');
     });
     if (!loaded && !loading) load(false);
+    else if (meta && meta.data) platform.captureCount().then(count => showMeta({ ...meta, captured: count.count }));
   }
 
   function ensureButton() {
@@ -141,22 +138,5 @@
     return button;
   }
 
-  // Наблюдения из MAIN world → фон.
-  window.addEventListener('message', event => {
-    if (event.source !== window) return;
-    const data = event.data;
-    if (!data || data.source !== 'legion-wiki' || data.type !== 'capture') return;
-    const items = (data.items || [])
-      .map(pack => LegionWikiModel.toEntry(pack.item, pack.svg))
-      .filter(Boolean);
-    if (!items.length) return;
-    send('capture', { items }).then(result => {
-      if (result && result.ok && meta && meta.data) showMeta({ ...meta, captured: result.count });
-    });
-  });
-
   ensureButton();
-  try {
-    if (localStorage.getItem('lgTab') === 'wiki') activate();
-  } catch (error) { /* приватный режим */ }
 })();

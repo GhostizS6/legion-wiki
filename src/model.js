@@ -70,4 +70,4 @@
   }
 
   root.LegionWikiModel = { STAT_BY_KEY, PERCENT, TYPE_BY_SLOT, RARITY_BY_ID, CLASS_BY_ROLE, ALL_CLASSES, PLACEHOLDER, normalizeSvg, iconSrc, statsOf, toEntry };
-})(typeof self !== 'undefined' ? self : globalThis);
+})(globalThis);

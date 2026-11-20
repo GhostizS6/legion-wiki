@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 'use strict';
-// Сливает экспорт из игры в data/items.json и обновляет встроенный снепшот.
+// Сливает экспорт из игры в data/items.json и пересобирает юзерскрипт.
 // Использование: node tools/merge.js captures.json [ещё-файл.json]
 const fs = require('fs');
 const path = require('path');
-const merge = require('../extension/shared/merge.js');
+const { execFileSync } = require('child_process');
+const merge = require('../src/merge.js');
 
 const root = path.resolve(__dirname, '..');
 const dataPath = path.join(root, 'data', 'items.json');
-const bundlePath = path.join(root, 'extension', 'data', 'items.json');
 const files = process.argv.slice(2).filter(file => !file.startsWith('--'));
 
 if (!files.length) {
@@ -25,9 +25,8 @@ for (const file of files) {
 
 const merged = merge.mergeCatalog(base, observations);
 merged.updatedAt = new Date().toISOString();
-fs.mkdirSync(path.dirname(bundlePath), { recursive: true });
 fs.writeFileSync(dataPath, JSON.stringify(merged), 'utf8');
-fs.copyFileSync(dataPath, bundlePath);
 
 const fresh = merged.items.filter(item => item.sources.includes('capture')).length;
 console.log(`наблюдений: ${observations.length} · предметов в каталоге: ${merged.items.length} · из игры: ${fresh}`);
+execFileSync(process.execPath, [path.join(__dirname, 'build.js')], { stdio: 'inherit' });

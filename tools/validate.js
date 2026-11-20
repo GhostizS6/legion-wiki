@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 'use strict';
-// Проверяет data/items.json и синхронность встроенного снепшота.
+// Проверяет data/items.json и актуальность собранного юзерскрипта.
 const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const dataPath = path.join(root, 'data', 'items.json');
-const bundlePath = path.join(root, 'extension', 'data', 'items.json');
+const scriptPath = path.join(root, 'legion-wiki.user.js');
 const errors = [];
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
 
 if (data.schemaVersion !== 2) errors.push('schemaVersion должен быть 2');
 if (!Array.isArray(data.items) || !data.items.length) errors.push('items пустой');
@@ -28,8 +29,12 @@ for (const item of data.items) {
   }
 }
 
-if (fs.existsSync(bundlePath) && fs.readFileSync(bundlePath, 'utf8') !== fs.readFileSync(dataPath, 'utf8')) {
-  errors.push('extension/data/items.json отличается от data/items.json — запусти tools/merge.js или скопируй файл');
+if (!fs.existsSync(scriptPath)) {
+  errors.push('нет legion-wiki.user.js — запусти tools/build.js');
+} else {
+  const script = fs.readFileSync(scriptPath, 'utf8');
+  if (!script.includes(`// @version      ${version}`)) errors.push(`версия в userscript не совпадает с package.json (${version}) — пересобери`);
+  if (!script.includes('const BASE_DATA = ' + fs.readFileSync(dataPath, 'utf8') + ';')) errors.push('встроенный снепшот устарел — пересобери tools/build.js');
 }
 
 if (errors.length) {
@@ -37,4 +42,4 @@ if (errors.length) {
   for (const error of errors.slice(0, 40)) console.error(' - ' + error);
   process.exit(1);
 }
-console.log(`OK: ${data.items.length} предметов, ${data.items.filter(item => item.gameId).length} с привязкой к игре`);
+console.log(`OK: ${data.items.length} предметов, ${data.items.filter(item => item.gameId).length} с привязкой к игре, userscript v${version}`);
