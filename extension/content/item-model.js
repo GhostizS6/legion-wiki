@@ -7,8 +7,8 @@
     const bonus = ENCHANT_BONUS[Math.max(0, Math.min(15, Math.trunc(Number(level) || 0)))];
     return Object.fromEntries(Object.entries(stats || {}).map(([name, stat]) => {
       const value = num(stat);
-      // Match the archived game's enchStatsN: round positive enhanced stats
-      // only. At +0, decimals and negative penalties must stay unchanged.
+      // Как в архиве игры (enchStatsN): округляем только усиленные
+      // положительные статы. На +0 дроби и штрафы не меняются.
       return [name, {...stat, value: bonus && value > 0
         ? Math.round(value * (1 + bonus / (SECONDARY.has(name) ? 400 : 100)))
         : value}];

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Мінімальний тест злиття каталогу з спостереженнями.
+// Минимальный тест слияния каталога с наблюдениями.
 const assert = require('assert');
 const { keyOf, mergeCatalog } = require('../extension/shared/merge.js');
 
@@ -22,13 +22,13 @@ const merged = mergeCatalog(base, [
 ]);
 
 assert.strictEqual(keyOf({ gameId: 'dagger', name: 'Коготок героя' }), 'dagger|Коготок героя');
-assert.strictEqual(merged.items.length, 2, 'різні назви одного gameId — окремі записи');
+assert.strictEqual(merged.items.length, 2, 'разные названия одного gameId — отдельные записи');
 const updated = merged.items.find(item => item.id === 'dagger|Накладной коготок');
-assert.deepStrictEqual(updated.stats, stats, 'стати перезаписуються останнім спостереженням');
+assert.deepStrictEqual(updated.stats, stats, 'статы перезаписываются последним наблюдением');
 assert.ok(updated.sources.includes('capture'));
 assert.strictEqual(updated.seen, 1);
 const created = merged.items.find(item => item.name === 'Коготок героя');
-assert.strictEqual(created.description, 'Описание из лора', 'новий варіант успадковує опис базового предмета');
-assert.deepStrictEqual(base.items[0].stats, { Царапки: { value: 8, percent: false } }, 'вхідні дані не мутуються');
+assert.strictEqual(created.description, 'Описание из лора', 'новый вариант наследует описание базового предмета');
+assert.deepStrictEqual(base.items[0].stats, { Царапки: { value: 8, percent: false } }, 'входные данные не мутируются');
 assert.strictEqual(mergeCatalog(base, []).items.length, 1);
 console.log('merge: OK');

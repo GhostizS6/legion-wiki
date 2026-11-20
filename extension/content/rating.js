@@ -1,12 +1,12 @@
 (function(root) {
   'use strict';
-  // An openly defined wiki index, not a combat simulation or a server rating.
+  // Открыто заданный индекс вики, а не боевая симуляция или серверный рейтинг.
   const WEIGHTS = Object.freeze({'Царапки':1.2,'Мяу-магия':1.2,'Мур-ХП':.8,'Пушистость':1,
     'Сопротивление':1,'Шанс крита':1.2,'Сила крита':.65,'Удача':1,'Уклонение':.8,
     'Сила лечения':1,'Пробивание':1.1});
   const rounded = value => Math.round(value * 1e9) / 1e9;
-  // One scale per equipment type. Splitting by exact class lists gave a
-  // universal helmet a private cohort and 100 despite stronger usable helmets.
+  // Одна шкала на тип экипировки. Разбивка по точным спискам классов давала
+  // универсальному шлему отдельную когорту и 100, хотя есть шлемы сильнее.
   const groupOf = item => item.type || '';
   function breakdown(item) {
     const parts = Object.entries(item.stats || {}).map(([name, stat]) => {

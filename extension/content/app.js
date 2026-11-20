@@ -1,5 +1,5 @@
 'use strict';
-// UI вікі: та сама логіка, що у 3.13.0, але змонтована в довільний root (shadow DOM у грі).
+// UI вики: та же логика, что в 3.13.0, но смонтирована в произвольный root (shadow DOM в игре).
 window.LegionWikiUI = (function () {
   const { ENCHANT_BONUS, num, enchantStats, formatStat, fitsClass, classLabel, missing } = ItemModel;
 

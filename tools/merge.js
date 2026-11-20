@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-// Зливає експорт із гри у data/items.json і оновлює вбудований снепшот.
-// Використання: node tools/merge.js captures.json [ще-файл.json]
+// Сливает экспорт из игры в data/items.json и обновляет встроенный снепшот.
+// Использование: node tools/merge.js captures.json [ещё-файл.json]
 const fs = require('fs');
 const path = require('path');
 const merge = require('../extension/shared/merge.js');
@@ -12,7 +12,7 @@ const bundlePath = path.join(root, 'extension', 'data', 'items.json');
 const files = process.argv.slice(2).filter(file => !file.startsWith('--'));
 
 if (!files.length) {
-  console.error('Вкажи файл експорту: node tools/merge.js legion-wiki-captures.json');
+  console.error('Укажи файл экспорта: node tools/merge.js legion-wiki-captures.json');
   process.exit(1);
 }
 
@@ -30,4 +30,4 @@ fs.writeFileSync(dataPath, JSON.stringify(merged), 'utf8');
 fs.copyFileSync(dataPath, bundlePath);
 
 const fresh = merged.items.filter(item => item.sources.includes('capture')).length;
-console.log(`спостережень: ${observations.length} · предметів у каталозі: ${merged.items.length} · з ігор: ${fresh}`);
+console.log(`наблюдений: ${observations.length} · предметов в каталоге: ${merged.items.length} · из игры: ${fresh}`);

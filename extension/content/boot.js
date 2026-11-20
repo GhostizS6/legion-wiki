@@ -1,5 +1,5 @@
 'use strict';
-// Вкладка «Вики» у шапці гри + панель у shadow DOM.
+// Вкладка «Вики» в шапке игры + панель в shadow DOM.
 (function () {
   if (window.__legionWikiBoot) return;
   window.__legionWikiBoot = true;
@@ -141,7 +141,7 @@
     return button;
   }
 
-  // Спостереження з MAIN world → фон.
+  // Наблюдения из MAIN world → фон.
   window.addEventListener('message', event => {
     if (event.source !== window) return;
     const data = event.data;
@@ -158,5 +158,5 @@
   ensureButton();
   try {
     if (localStorage.getItem('lgTab') === 'wiki') activate();
-  } catch (error) { /* приватний режим */ }
+  } catch (error) { /* приватный режим */ }
 })();

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-// Одноразовий імпорт старого снепшоту вікі 3.13.0 у формат data/items.json.
-// Використання: node tools/seed.js --wiki "C:\...\legion-wiki-edge-3.13.0\wiki-data.json"
+// Одноразовый импорт старого снепшота вики 3.13.0 в формат data/items.json.
+// Использование: node tools/seed.js --wiki "C:\...\legion-wiki-edge-3.13.0\wiki-data.json"
 const fs = require('fs');
 const path = require('path');
 
@@ -68,7 +68,7 @@ async function main() {
   };
   const wikiPath = arg('--wiki');
   const outPath = path.resolve(arg('--out') || 'data/items.json');
-  if (!wikiPath) throw new Error('Вкажи --wiki <шлях до wiki-data.json>');
+  if (!wikiPath) throw new Error('Укажи --wiki <путь к wiki-data.json>');
 
   const wiki = JSON.parse(fs.readFileSync(wikiPath, 'utf8'));
   const wikiDir = path.dirname(wikiPath);

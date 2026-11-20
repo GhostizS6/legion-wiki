@@ -1,5 +1,5 @@
-// Сторінка гри: тихо збирає побачені предмети та їхні SVG-іконки.
-// Працює у MAIN world, бо потребує window.LGInventory. Зв'язок — window.postMessage.
+// Страница игры: тихо собирает увиденные предметы и их SVG-иконки.
+// Работает в MAIN world, потому что нужен window.LGInventory. Связь — window.postMessage.
 (function () {
   'use strict';
   if (window.__legionWikiCollector) return;
@@ -36,7 +36,7 @@
     const original = api.art;
     const wrapped = function (item) {
       const svg = original.apply(this, arguments);
-      try { push(item, svg); } catch (error) { /* чужий предмет без полів — пропускаємо */ }
+      try { push(item, svg); } catch (error) { /* чужой предмет без полей — пропускаем */ }
       return svg;
     };
     wrapped.__legionWiki = true;
@@ -58,7 +58,7 @@
         try { svg = window.LGInventory && window.LGInventory.art ? window.LGInventory.art(item) : ''; } catch (error) { svg = ''; }
         push(item, svg);
       }
-    } catch (error) { /* мережа/сесія — наступний цикл */ }
+    } catch (error) { /* сеть/сессия — следующий цикл */ }
   }
 
   hookArt();

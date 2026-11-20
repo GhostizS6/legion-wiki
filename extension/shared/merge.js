@@ -1,5 +1,5 @@
-// Чиста логіка злиття каталогу з зібраними спостереженнями.
-// Спільна для service worker (importScripts), content script і tools/merge.js.
+// Чистая логика слияния каталога с собранными наблюдениями.
+// Общая для service worker (importScripts), content script и tools/merge.js.
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -12,7 +12,7 @@
     return { ...item, stats: { ...(item.stats || {}) }, classes: [...(item.classes || [])], sources: [...(item.sources || [])] };
   }
 
-  // Спільні для id+name поля: останнє спостереження перезаписує попереднє.
+  // Общие для id+name поля: последнее наблюдение перезаписывает предыдущее.
   const CAPTURE_FIELDS = ['type', 'rarity', 'classes', 'stats', 'look', 'enchant', 'baseName', 'approximate'];
 
   function mergeCatalog(base, captures) {
@@ -40,7 +40,7 @@
       for (const field of CAPTURE_FIELDS) {
         if (capture[field] !== undefined && capture[field] !== null) item[field] = capture[field];
       }
-      // Загальна заглушка без look не має перетирати справжню іконку.
+      // Общая заглушка без look не должна перетирать настоящую иконку.
       if (capture.icon && (capture.look || !item.icon)) item.icon = capture.icon;
       item.seen = (item.seen || 0) + (capture.seen || 1);
       item.updatedAt = capture.updatedAt || Date.now();

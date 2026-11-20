@@ -286,7 +286,7 @@ input:focus-visible,button:focus-visible,select:focus-visible,.item:focus-visibl
 @media(max-width:780px){.item-art::before{width:min(120px,100%);height:98px}.detail-art{width:76px;height:76px}.detail-art>img{width:70px;height:70px}}
 @media(max-width:600px){.compare-art.item-art::before{width:80px;height:70px}.compare-art.item-art::after{width:80px;height:17px}}
 
-/* Панель всередині гри: усе в shadow root, тому глобальні правила вимкнені. */
+/* Панель внутри игры: всё в shadow root, поэтому глобальные правила отключены. */
 :host{all:initial;display:block;font-family:"Segoe UI",Arial,sans-serif;font-size:14px;color:#e8dcea;color-scheme:dark;
   --gold:#efc37e;--muted:#bda6c7;--line:#65445f;--serif:Georgia,"Times New Roman",serif}
 :host([hidden]){display:none}
